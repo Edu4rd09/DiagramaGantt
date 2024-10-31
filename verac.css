@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+    --accent-color: #0F383E;
+    --base-color: #0f383e;
+    --text-color: #092526;
+    --input-color: #F3F0FF;
+    --background-color: transparent; /* Hacemos el fondo transparente */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0F383E, #346053);
+    color: var(--text-color);
+/*     text-align: center;
+ */    padding: 20px;
+}
+
+h1, h2 {
+    color: white;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+form label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    font-weight: 600;
+}
+
+form input[type="text"], form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--input-color);
+    border-radius: 5px;
+    background-color: var(--input-color);
+    transition: border-color 150ms ease;
+}
+
+form input[type="text"]:focus, form input[type="number"]:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
+
+form button {
+    padding: 10px 20px;
+    margin: 10px 5px 0;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: background-color 150ms ease;
+}
+
+form button:hover {
+    background-color: var(--text-color);
+}
+
+.table-container {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid var(--accent-color);
+}
+
+th {
+    background-color: var(--base-color);
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.gantt-bar {
+    height: 20px;
+    background-color: var(--accent-color);
+    display: inline-block;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+}
+
+button#volver, button#descargarImagen {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    margin-top: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+button#volver:hover, button#descargarImagen:hover {
+    background-color: var(--text-color);
+}
+/* Botones de Editar y Eliminar */
+button.editar {
+    background-color: var(--accent-color); /* Verde para editar */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 150ms ease;
+}
+
+button.editar:hover {
+    background-color: var(--text-color);
+}
+
+button.eliminar {
+    background-color: var(--accent-color); /* Verde para editar */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 150ms ease;
+}
+
+button.eliminar:hover {
+    background-color: var(--text-color);
+}

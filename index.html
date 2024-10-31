@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio sesión</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Inicio sesión</h1>
+        <p id="error-message"></p>
+        <form id="form">
+            <div>
+                <label for="email-input">
+                    <span>@</span>
+                </label>
+                <input type="email" name="email" id="email-input" placeholder="Gmail" required>
+            </div>
+            <div>
+                <label for="password-input">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                        <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/>
+                    </svg>
+                </label>
+                <input type="password" name="password" id="password-input" placeholder="Contraseña" required>
+            </div>
+            <button type="submit">Iniciar</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById('form');
+            const emailInput = document.getElementById('email-input');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+
+                errorMessage.textContent = '';
+
+                // Validar el correo electrónico
+                if (!validateEmail(email)) {
+                    errorMessage.textContent = 'Por favor, introduce un correo electrónico válido.';
+                    return;
+                }
+
+                // Validar la contraseña (mínimo 6 caracteres)
+                if (password.length < 6) {
+                    errorMessage.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+                    return;
+                }
+
+                // Recuperar usuarios almacenados
+                const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+                const usuarioEncontrado = usuarios.find(user => user.email === email && user.password === password);
+
+                if (usuarioEncontrado) {
+                    window.location.href = 'inicio.html'; // Redirige a la página principal
+                } else {
+                    errorMessage.textContent = 'Correo o contraseña incorrectos.';
+                }
+            });
+
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+        });
+    </script>
+</body>
+</html>

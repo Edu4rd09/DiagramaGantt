@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Proyecto</title>
+    <link rel="stylesheet" href="crearpa.css"> <!-- Asegúrate de tener un archivo CSS si es necesario -->
+</head>
+<body>
+    <div class="container">
+        <h1>Crear Proyecto</h1>
+        <form id="crearProyectoForm" onsubmit="guardarProyecto(event);">
+            <label for="nombreProyecto">Nombre del Proyecto:</label>
+            <input type="text" id="nombreProyecto" required>
+
+            <label for="duracion">Duración:</label>
+            <input type="number" id="duracion" required>
+
+            <label for="unidadTiempo">Unidad de Tiempo:</label>
+            <select id="unidadTiempo" required>
+                <option value="segundos">Segundos</option>
+                <option value="minutos">Minutos</option>
+                <option value="horas">Horas</option>
+                <option value="días">Días</option>
+                <option value="semanas">Semanas</option>
+                <option value="meses">Meses</option>
+                <option value="años">Años</option>
+            </select>
+
+            <p>Fecha de Creación: <span id="fechaCreacion"></span></p>
+
+            <button type="submit">Guardar Proyecto</button>
+            <button type="button" onclick="window.location.href='inicio.html'">Atrás</button>
+        </form>
+    </div>
+
+    <script src="crearpa.js"></script>
+    <script>
+        document.getElementById('fechaCreacion').innerText = new Date().toLocaleDateString();
+    </script>
+</body>
+</html>

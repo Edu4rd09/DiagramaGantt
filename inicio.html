@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Inicio</title>
+    <link rel="stylesheet" href="inicio.css">
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Gestión de Proyectos</h1>
+        <div class="menu">
+            <button id="agregarProyecto" class="menu-btn">Agregar Proyecto</button>
+            <button id="verProyectos" class="menu-btn">Ver Proyectos</button>
+            <button id="RegistrarEmpleado" class="menu-btn">Registrar Empleado</button>
+            <button id="salir" class="menu-btn">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('agregarProyecto').onclick = function() {
+            window.location.href = 'crearpa.html'; // Redirige a crearpa.html
+        };
+        
+        document.getElementById('verProyectos').onclick = function() {
+            window.location.href = 'verpro.html'; // Redirige a verpro.html
+        };
+        document.getElementById('RegistrarEmpleado').onclick = function() {
+            window.location.href = 'signup.html'; // Redirige a verpro.html
+        };
+        document.getElementById('salir').onclick = function() {
+            // Aquí puedes agregar la lógica para cerrar sesión, por ejemplo:
+            // Borrar el token o datos del usuario del localStorage o sessionStorage
+            localStorage.removeItem('usuario'); // Suponiendo que guardas el usuario en localStorage
+            window.location.href = 'index.html'; // Redirige a la página de inicio de sesión
+        };
+    </script>
+</body>
+</html>

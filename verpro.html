@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Proyectos</title>
+    <link rel="stylesheet" href="verpro.css"> <!-- Asegúrate de tener un archivo CSS si es necesario -->
+</head>
+<body>
+    <div class="container">
+        <h1>Proyectos Creados</h1>
+        <table id="tabla-proyectos">
+            <thead>
+                <tr>
+                    <th>Nombre del Proyecto</th>
+                    <th>Fecha de Creación</th>
+                    <th>Duración</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas de proyectos se generarán aquí -->
+            </tbody>
+        </table>
+        <button id="volver">Volver</button>
+    </div>
+
+    <script>
+        // Cargar proyectos desde localStorage
+        const proyectosGuardados = JSON.parse(localStorage.getItem('proyectos')) || [];
+        const tablaProyectos = document.getElementById('tabla-proyectos').getElementsByTagName('tbody')[0];
+
+        proyectosGuardados.forEach((proyecto, index) => {
+            const nuevaFila = tablaProyectos.insertRow();
+
+            nuevaFila.insertCell(0).textContent = proyecto.nombre;
+            nuevaFila.insertCell(1).textContent = proyecto.fechaCreacion; // Asegúrate de que guardes esta información
+            nuevaFila.insertCell(2).textContent = `${proyecto.duracion} ${proyecto.unidad}`; // Asegúrate de que guardes la unidad
+
+            const celdaAcciones = nuevaFila.insertCell(3);
+            const btnVerActividades = document.createElement('button');
+            btnVerActividades.textContent = 'Ver Actividades';
+            btnVerActividades.onclick = function() {
+                // Redirigir a la página de actividades del proyecto, pasando el índice del proyecto
+                window.location.href = `verac.html?index=${index}`; // Asegúrate de que esta página esté configurada para mostrar las actividades del proyecto seleccionado
+            };
+            celdaAcciones.appendChild(btnVerActividades);
+
+            const btnEliminar = document.createElement('button');
+            btnEliminar.textContent = 'Eliminar';
+            btnEliminar.onclick = function() {
+                // Eliminar proyecto
+                const index = proyectosGuardados.indexOf(proyecto);
+                if (index !== -1) {
+                    proyectosGuardados.splice(index, 1);
+                    localStorage.setItem('proyectos', JSON.stringify(proyectosGuardados));
+                    location.reload(); // Recargar la página para ver los cambios
+                }
+            };
+            celdaAcciones.appendChild(btnEliminar);
+        });
+
+        // Volver a la página de inicio
+        document.getElementById('volver').onclick = function() {
+            window.location.href = 'inicio.html'; // Redirige a la página de inicio
+        };
+    </script>
+</body>
+</html>

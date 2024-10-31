@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="agregar_actividades.css">
+    <title>Agregar Actividades</title>
+</head>
+<body>
+    <header>
+        <h1>Agregar Actividades</h1>
+    </header>
+
+    <main>
+        <section class="formulario">
+            <h2>Detalles de la Actividad</h2>
+            <label class="subtitle" for="nombre-actividad">Nombre de la Actividad:</label>
+            <input type="text" id="nombre-actividad" required>
+
+            <label class="subtitle" for="inicio-actividad">Inicio (en segundos):</label>
+            <input type="number" id="inicio-actividad" required>
+
+            <label class="subtitle" for="fin-actividad">Fin (en segundos):</label>
+            <input type="number" id="fin-actividad" required>
+
+            <label class="subtitle" for="responsable-actividad">Responsable:</label>
+            <input type="text" id="responsable-actividad" required>
+
+            <div class="botones">
+                <button type="button" class="add" id="agregar-actividad">Agregar Actividad</button>
+                <button type="button" class="back" onclick="window.location.href='inicio.html'">Volver al Menu</button>
+                <button type="button" class="remove" id="guardar-gantt">Descargar Diagrama</button>
+
+            </div>
+
+        </section>
+
+        <section>
+            <h2>Lista de Actividades</h2>
+            <table id="tabla-actividades">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Duración</th>
+                        <th>Diagrama de Gantt</th>
+                        <th>Responsable</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las actividades se agregarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="agregar_actividades.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</body>
+</html>

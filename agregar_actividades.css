@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --accent-color: #0F383E;
+    --base-color: #346053;
+    --text-color: #092526;
+    --input-color: #F3F0FF;
+
+     /* Nuevos colores para botones */
+     --button-add-bg: #4CAF50; /* Verde para agregar */
+     --button-add-hover-bg: #45a049; /* Verde oscuro para hover */
+     --button-remove-bg: #F44336; /* Rojo para eliminar */
+     --button-remove-hover-bg: #e53935; /* Rojo oscuro para hover */
+     --button-back-bg: #2196F3; /* Azul para regresar */
+     --button-back-hover-bg: #1976D2; /* Azul oscuro para hover */
+ }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.subtitle{
+    color: white;
+
+}
+html {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+body {
+    background: linear-gradient(135deg, #0F383E, #346053);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 10px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* No centrado */
+}
+
+section {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: white;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+input {
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid var(--accent-color);
+    border-radius: 5px;
+    background-color: var(--input-color);
+    font-size: 1rem;
+    transition: border-color 150ms ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--text-color);
+}
+
+.botones {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--accent-color);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+}
+
+button:hover {
+    background-color: var(--text-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid var(--base-color);
+    text-align: left;
+}
+
+th {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #F3F0FF;
+}
+
+tr {
+    background-color: #d0e6e6; /* Color al pasar el mouse */
+}
+
+   
+
+button.add {
+    background: var(--button-add-bg);
+}
+
+button.add:hover {
+    background: var(--button-add-hover-bg);
+}
+
+button.remove {
+    background: var(--button-remove-bg);
+}
+
+button.remove:hover {
+    background: var(--button-remove-hover-bg);
+}
+
+button.back {
+    background: var(--button-back-bg);
+}
+
+button.back:hover {
+    background: var(--button-back-hover-bg);
+}

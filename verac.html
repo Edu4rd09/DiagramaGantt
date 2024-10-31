@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Actividades</title>
+    <link rel="stylesheet" href="verac.css">
+    <style>
+        /* Estilos para el diagrama de Gantt */
+        .gantt-bar {
+            height: 20px; /* Altura de la barra */
+            background-color: #4CAF50; /* Color de la barra */
+            position: relative; /* Posicionamiento relativo para la barra */
+            display: inline-block; /* Permitir que la barra se posicione en línea */
+            text-align: center; /* Centrar el texto en la barra */
+            color: white; /* Color del texto */
+            font-weight: bold; /* Negrita para el texto */
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <h1>Actividades del Proyecto</h1>
+    
+    <!-- Formulario para agregar y editar actividades -->
+    <h2>Agregar o Editar Actividad</h2>
+    <form id="formActividad">
+        <label for="nombreActividad">Nombre:</label>
+        <input type="text" id="nombreActividad" name="nombre" required>
+        <label for="inicioActividad">Inicio (número):</label>
+        <input type="number" id="inicioActividad" name="inicio" min="1" required>
+        <label for="finActividad">Fin (número):</label>
+        <input type="number" id="finActividad" name="fin" min="1" required>
+        <label for="responsableActividad">Responsable:</label>
+        <input type="text" id="responsableActividad" name="responsable" required>
+        <button type="submit">Agregar/Editar Actividad</button>
+        <button type="button" id="cancelarEdicion" style="display:none;">Cancelar Edición</button>
+    </form>
+
+    <!-- Contenedor de actividades -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre de la Actividad</th>
+                    <th>Inicio (número)</th>
+                    <th>Fin (número)</th>
+                    <th>Responsable</th>
+                    <th>Diagrama de Gantt</th> <!-- Nueva columna para el diagrama de Gantt -->
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="actividadesTabla">
+                <!-- Aquí se llenarán las filas con JavaScript -->
+            </tbody>
+        </table>
+        <button id="volver">Volver</button> <!-- Botón para volver a la página anterior -->
+        <button id="descargarImagen">Descargar Imagen del Diagrama</button>
+    </div>
+
+    <script>
+        let proyectoSeleccionado = null; // Guardar el proyecto seleccionado globalmente
+        let actividadActualId = null; // Guardar la actividad que se está editando
+
+        // Función para cargar las actividades del proyecto seleccionado
+        function cargarActividades() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const index = urlParams.get('index'); // Obtener el índice del proyecto
+
+            // Cargar proyectos desde localStorage
+            const proyectos = JSON.parse(localStorage.getItem('proyectos')) || [];
+            proyectoSeleccionado = proyectos[index];
+            const actividades = proyectoSeleccionado ? proyectoSeleccionado.actividades : [];
+
+            const tabla = document.getElementById('actividadesTabla');
+            tabla.innerHTML = ''; // Limpiar la tabla antes de llenarla
+
+            actividades.forEach(actividad => {
+                const duracion = actividad.fin - actividad.inicio; // Calcular la duración de la actividad
+                const ganttBar = `<div class="gantt-bar" style="width: ${duracion * 10}px; left: ${actividad.inicio * 10}px;">${duracion}</div>`; // Mostrar solo la duración en la barra
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${actividad.nombre}</td>
+                    <td>${actividad.inicio}</td>
+                    <td>${actividad.fin}</td>
+                    <td>${actividad.responsable}</td>
+                    <td style="position: relative; width: 300px;">${ganttBar}</td> <!-- Nueva celda para el diagrama de Gantt -->
+                    <td>
+    <button class="editar" onclick="editarActividad(${actividad.id})">Editar</button>
+    <button class="eliminar" onclick="eliminarActividad(${actividad.id})">Eliminar</button>
+</td>
+                `;
+                tabla.appendChild(row);
+            });
+        }
+
+        // Cargar actividades al cargar la página
+        window.onload = cargarActividades;
+
+        // Volver a la página anterior
+        document.getElementById('volver').onclick = function() {
+            window.history.back(); // Vuelve a la página anterior
+        };
+
+        // Mostrar formulario para editar actividad
+        function editarActividad(id) {
+            const actividad = proyectoSeleccionado.actividades.find(act => act.id === id);
+            if (actividad) {
+                actividadActualId = id;
+                document.getElementById('nombreActividad').value = actividad.nombre;
+                document.getElementById('inicioActividad').value = actividad.inicio;
+                document.getElementById('finActividad').value = actividad.fin;
+                document.getElementById('responsableActividad').value = actividad.responsable;
+                document.getElementById('cancelarEdicion').style.display = 'block'; // Mostrar botón de cancelar edición
+            }
+        }
+
+        // Cancelar la edición
+        document.getElementById('cancelarEdicion').onclick = function() {
+            actividadActualId = null; // Resetear la actividad actual
+            document.getElementById('formActividad').reset(); // Limpiar el formulario
+            this.style.display = 'none'; // Ocultar botón de cancelar edición
+        };
+
+        // Función para agregar o editar actividad
+        document.getElementById('formActividad').onsubmit = function(event) {
+            event.preventDefault();
+
+            // Obtener los valores del formulario
+            const nombre = document.getElementById('nombreActividad').value;
+            const inicio = parseInt(document.getElementById('inicioActividad').value);
+            const fin = parseInt(document.getElementById('finActividad').value);
+            const responsable = document.getElementById('responsableActividad').value;
+
+            // Verificar si los valores de inicio y fin están dentro del rango permitido por la duración del proyecto
+            const duracionProyecto = proyectoSeleccionado.duracion; // Duración total del proyecto en la unidad correspondiente
+
+            // Validar que no haya otra actividad con el mismo nombre, excepto si es la misma que se está editando
+            const existeActividad = proyectoSeleccionado.actividades.some(act => act.nombre === nombre && act.id !== actividadActualId);
+
+            if (existeActividad) {
+                alert('Ya existe una actividad con ese nombre.');
+                return;
+            }
+
+            if (inicio >= 1 && fin <= duracionProyecto && inicio < fin) {
+                if (actividadActualId) {
+                    // Actualizar la actividad existente
+                    const actividadIndex = proyectoSeleccionado.actividades.findIndex(act => act.id === actividadActualId);
+                    if (actividadIndex !== -1) {
+                        proyectoSeleccionado.actividades[actividadIndex] = {
+                            id: actividadActualId,
+                            nombre,
+                            inicio,
+                            fin,
+                            responsable
+                        };
+                    }
+                    actividadActualId = null; // Resetear el ID después de editar
+                } else {
+                    // Crear nueva actividad
+                    const nuevaActividad = {
+                        id: Date.now(), // Genera un ID único
+                        nombre,
+                        inicio,
+                        fin,
+                        responsable
+                    };
+
+                    // Agregar nueva actividad al proyecto
+                    proyectoSeleccionado.actividades.push(nuevaActividad);
+                }
+
+                // Actualizar localStorage
+                const proyectos = JSON.parse(localStorage.getItem('proyectos')) || [];
+                proyectos[proyectos.findIndex(p => p.nombre === proyectoSeleccionado.nombre)] = proyectoSeleccionado;
+                localStorage.setItem('proyectos', JSON.stringify(proyectos)); // Guarda los cambios
+
+                document.getElementById('cancelarEdicion').style.display = 'none'; // Ocultar el botón de cancelar después de guardar
+                location.reload(); // Recargar la página para ver los cambios
+            } else {
+                alert(`Los valores de inicio y fin deben estar entre 1 y ${duracionProyecto}, y el inicio debe ser menor que el fin.`);
+            }
+        };
+
+        // Función para eliminar la actividad
+        function eliminarActividad(id) {
+            const actividadIndex = proyectoSeleccionado.actividades.findIndex(act => act.id === id);
+            if (actividadIndex !== -1) {
+                proyectoSeleccionado.actividades.splice(actividadIndex, 1); // Elimina la actividad
+
+                // Actualizar localStorage
+                const proyectos = JSON.parse(localStorage.getItem('proyectos')) || [];
+                proyectos[proyectos.findIndex(p => p.nombre === proyectoSeleccionado.nombre)] = proyectoSeleccionado;
+                localStorage.setItem('proyectos', JSON.stringify(proyectos)); // Guarda los cambios
+
+                location.reload(); // Recargar la página para ver los cambios
+            }
+        }
+
+        // Función para descargar la imagen del diagrama de Gantt
+        document.getElementById('descargarImagen').onclick = function() {
+            const tabla = document.querySelector('.table-container table'); // Seleccionar la tabla completa
+
+            html2canvas(tabla).then(function(canvas) {
+                const link = document.createElement('a');
+                link.download = 'diagrama_gantt.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        };
+    </script>
+</body>
+</html>
